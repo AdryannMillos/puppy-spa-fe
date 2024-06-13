@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Button from '../components/Button';
 import { useRouter } from 'next/navigation';
 import Input from '../components/Input';
+import DragableList from '../components/DragableList';
 
 const Container = styled.div`
   max-width: 600px;
@@ -64,7 +65,8 @@ const WaitingList: React.FC = () => {
 
     const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
 
-    const [list, setList] = useState<{ attended: Appointment[]; unattended: Appointment[] }>({ attended: [], unattended: [] });
+    const [attended, setAttended] = useState<Appointment[]>([]);
+    const [unattended, setUnattended] = useState<Appointment[]>([]);
 
     const [service, setService] = useState('');
     const [arrivalTime, setArrivalTime] = useState('');
@@ -85,12 +87,9 @@ const WaitingList: React.FC = () => {
             Authorization: `Bearer ${token}`,
         }
       });
-      console.log( response.data.attended, )
-      console.log( response.data.unattended)
-      setList({
-        attended: response.data.attended,
-        unattended: response.data.unattended,
-      });;
+
+      setAttended(response.data.attended);
+      setUnattended(response.data.unattended);
       
     } catch (error) {
       console.error('Error fetching list:', error);
@@ -137,55 +136,7 @@ const WaitingList: React.FC = () => {
     event.dataTransfer.setData('id', id.toString());
   };
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
 
-
-  const handleDrop = async (event: React.DragEvent<HTMLDivElement>, newOrder: number) => {
-    event.preventDefault();
-    const id = +event.dataTransfer.getData('id');
-  
-    let movedItem: Appointment | undefined;
-    let updatedAttended: Appointment[] = [...list.attended];
-    let updatedUnattended: Appointment[] = [...list.unattended];
-  
-    movedItem = updatedAttended.find(item => item.id === id);
-    if (movedItem) {
-      movedItem.order = newOrder;
-      updatedAttended = updatedAttended.map(item => (item.id === id ? { ...item, order: newOrder } : item));
-    } else {
-      movedItem = updatedUnattended.find(item => item.id === id);
-      if (movedItem) {
-        movedItem.order = newOrder;
-        updatedUnattended = updatedUnattended.map(item => (item.id === id ? { ...item, order: newOrder } : item));
-      }
-    }
-  
-    try {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        throw new Error('No token found');
-      }
-  
-      const updatedList = movedItem?.attended ? updatedAttended : updatedUnattended;
-  
-      await api.put(`/appointment/${id}/update`, movedItem, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
-      setList({
-        attended: updatedAttended,
-        unattended: updatedUnattended,
-      });
-
-      await fetchList(date)
-    } catch (error) {
-      console.error('Error updating item order:', error);
-    }
-  };
 
   return (
     <>
@@ -200,49 +151,15 @@ const WaitingList: React.FC = () => {
       <Link href="/add-puppy">
         Add a puppy
       </Link>
+      <Title>Unattended</Title>
+      <DragableList items={unattended} setItems={setUnattended}></DragableList>
       <ListContainer>
-        <h2>Unattended</h2>
-        {list?.unattended.map((item, index) => (
-          <ListItem
-            key={item.id}
-            draggable
-            onDragStart={(e) => handleDragStart(e, item.id)}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, index + 1)}
-          >
-            <DragHandle>::</DragHandle>
-            <span>order: {index + 1}</span>
-            <span>service: {item.service}</span>
-            <span>arrival time: {item.arrivalTime}</span>
-            <span>attended: {item.attended ? 'Yes' : 'No'}</span>
-            <span>{}</span>
-          </ListItem>
-        ))}
+      <Title>Attended</Title>
 
-      </ListContainer>
-      <ListContainer>
-        <h2>Attended</h2>
-
-        {list?.attended.map((item, index) => (
-          <ListItem
-            key={item.id}
-            draggable
-            onDragStart={(e) => handleDragStart(e, item.id)}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, index + 1)}
-          >
-            <DragHandle>::</DragHandle>
-            <span>order: {index + 1}</span>
-            <span>service: {item.service}</span>
-            <span>arrival time: {item.arrivalTime}</span>
-            <span>attended: {item.attended ? 'Yes' : 'No'}</span>
-            <span>{}</span>
-          </ListItem>
-        ))}
       </ListContainer>
     </Container>
     <Container>
-    <Title>Add a Puppy</Title>
+    <Title>Schedule a Puppy</Title>
       <Form onSubmit={handleSubmit}>
         <Input
           type="text"

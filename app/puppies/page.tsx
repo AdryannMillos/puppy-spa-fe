@@ -26,6 +26,31 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
+const ListItem = styled.div`
+  background-color: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+const ListContainer = styled.div`
+  margin-top: 20px;
+`;
+
+const Info = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+`;
+
+const InfoWrapper = styled.div`
+display: flex;
+align-items: center;
+justify-content: space-around;
+`;
+
 const AddPuppy: React.FC = () => {
   const router = useRouter();
   const [name, setName] = useState('');
@@ -33,6 +58,16 @@ const AddPuppy: React.FC = () => {
   const [breed, setBreed] = useState('');
   const [birthday, setBirthday] = useState('');
   const [puppy, setPuppy] = useState<any>();
+
+  const getCurrentTime = (timeString: any) => {
+    const date = new Date(timeString);
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+    return `${hours}:${minutes}:${seconds}`;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +79,7 @@ const AddPuppy: React.FC = () => {
 
       let response;
       if (puppy) {
-        
+        console.log(puppy)
         response = await api.put(`/puppy/${puppy.id}/update`, {
           name: puppy.name,
           ownerName: puppy.ownerName,
@@ -116,6 +151,20 @@ const AddPuppy: React.FC = () => {
               placeholder="Birthday (YYYY-MM-DD)"
             />
             <Button>Update</Button>
+            <ListContainer>
+              {puppy?.appointment?.map((item: any, index: any) => (
+                <ListItem key={item.id}>
+                  <InfoWrapper>
+                    <Info>
+                      <span>service: {item.service}</span>
+                      <span>date: {item.date}</span>
+                      <span>Arrived: {getCurrentTime(item.arrivalTime)}</span>
+                    </Info>
+                  </InfoWrapper>
+                </ListItem>
+              ))}
+              </ListContainer>
+
           </Form>
         </Container>
       )}

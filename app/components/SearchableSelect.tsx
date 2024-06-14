@@ -75,10 +75,10 @@ const SearchableSelect = ({setPuppyId = (data: any) => {return data}, setPuppy =
     };
   }, []);
 
-  const handleChange = (selectedOption) => {
+  const handleChange = (selectedOption: any) => {
     setSelectedOption(selectedOption);
      setPuppyId(selectedOption?.value);
-    const selectedPuppie = puppies.find(item => item?.id === selectedOption.value)
+    const selectedPuppie = puppies.find((item: any) => item?.id === selectedOption.value)
 
    setPuppy(selectedPuppie);
   };

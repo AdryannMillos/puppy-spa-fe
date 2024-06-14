@@ -65,7 +65,7 @@ export default function Login() {
       router.push('/waiting-list')
     
 
-    } catch (error) {
+    } catch (error: any) {
       if (error.response) {
         console.error('Sign-in error:', error.response.data);
         setError(error.response.data.message);

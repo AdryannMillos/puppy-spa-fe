@@ -32,7 +32,7 @@ const AddPuppy: React.FC = () => {
   const [ownerName, setOwnerName] = useState('');
   const [breed, setBreed] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [puppy, setPuppy] = useState();
+  const [puppy, setPuppy] = useState<any>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -75,8 +75,8 @@ const AddPuppy: React.FC = () => {
       console.error('Error submitting puppy:', error);
     }
   };
-  const handleInputChange = (key, value) => {
-    setPuppy((prevPuppy) => ({
+  const handleInputChange = (key: any, value: any) => {
+    setPuppy((prevPuppy: any) => ({
       ...prevPuppy,
       [key]: value,
     }));

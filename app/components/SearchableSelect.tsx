@@ -21,7 +21,7 @@ margin: 0px 0 15px 0;
   }
 `;
 
-const SearchableSelect = ({setPuppyId = (data) => {return data}, setPuppy = (data) =>{return data}}) => {
+const SearchableSelect = ({setPuppyId = (data: any) => {return data}, setPuppy = (data:any) =>{return data}}) => {
   const [options, setOptions] = useState([]);
   const [puppies, setPuppies] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ const SearchableSelect = ({setPuppyId = (data) => {return data}, setPuppy = (dat
   
     const data = await response.json();
     setPuppies(data)
-    return data.map(item => ({ value: item.id, label: `${item.name} / ${item.ownerName}` }));
+    return data.map((item: any) => ({ value: item.id, label: `${item.name} / ${item.ownerName}` }));
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const SearchableSelect = ({setPuppyId = (data) => {return data}, setPuppy = (dat
     const fetchInitialOptions = async () => {
       setLoading(true);
       try {
-        const initialOptions = await fetchOptions('');
+        const initialOptions = await fetchOptions();
         if (isMounted.current) {
           setOptions(initialOptions);
         }

@@ -64,22 +64,22 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type })
         await updateOrderOnBackend(newItems);
     };
     
-    function reorder(list, startIndex, endIndex) {
+    function reorder(list: any, startIndex: any, endIndex: any) {
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
 
-        return  result.map((item,index) => {item.order = index+1; return item})
+        return  result.map((item: any,index: any) => {item.order = index+1; return item})
     }
     
-    const updateOrderOnBackend = async (items) => {
+    const updateOrderOnBackend = async (items: any) => {
         try {
             const token = localStorage.getItem('access_token');
       if (!token) {
         throw new Error('No token found');
       }
   
-            const updatePromises = items.map((item, index) =>
+            const updatePromises = items.map((item: any, index:any) =>
                 fetch(`${process.env.NEXT_PUBLIC_API_URL}/appointment/${item.id}/update`, {
                     method: 'PUT',
                     headers: {
@@ -105,7 +105,7 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type })
             console.error('Failed to update order:', error);
         }
     };
-    const getCurrentTime = (timeString) => {
+    const getCurrentTime = (timeString: any) => {
         const date = new Date(timeString);
 
         const hours = String(date.getHours()).padStart(2, '0');
@@ -114,7 +114,7 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type })
       
         return `${hours}:${minutes}:${seconds}`;
       };
-    const handleAttendPuppy = async (id) => {
+    const handleAttendPuppy = async (id: any) => {
         try {
           const token = localStorage.getItem('access_token');
           if (!token) {
@@ -143,7 +143,7 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type })
         }
       };
 
-      const handleDeleteAppointment = async (id) => {
+      const handleDeleteAppointment = async (id: any) => {
         try {
           const token = localStorage.getItem('access_token');
           if (!token) {
@@ -182,7 +182,7 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type })
                         {...droppableProvided.droppableProps}
                         ref={droppableProvided.innerRef}
                     >
-                        {items.map((item, index) => (
+                        {items.map((item: any, index: any) => (
                             <Draggable
                                 draggableId={String(item.id)}
                                 index={index}

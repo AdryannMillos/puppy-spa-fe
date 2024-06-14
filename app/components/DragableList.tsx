@@ -196,7 +196,6 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type })
                                     >
                                         <InfoWrapper>
                                             <Info>
-                                        <span>{item.order} </span>
                                         <span>service: {item.service}</span>
                                         <span>Arrived: {getCurrentTime(item.arrivalTime)}</span>
                                         <span>puyppy: {`${item.puppy.name} / ${item.puppy.ownerName}`}</span>

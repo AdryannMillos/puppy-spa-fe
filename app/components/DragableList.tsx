@@ -38,7 +38,7 @@ display: flex;
 align-items: center;
 justify-content: space-around;
 `;
-const DragableList: React.FC<any> = ({ items, setItems, fetchList, date }) => {
+const DragableList: React.FC<any> = ({ items, setItems, fetchList, date, type }) => {
     const handleDragStart = () => {
         if(window.navigator.vibrate) window.navigator.vibrate(100)
     }
@@ -202,7 +202,7 @@ const DragableList: React.FC<any> = ({ items, setItems, fetchList, date }) => {
                                         <span>puyppy: {`${item.puppy.name} / ${item.puppy.ownerName}`}</span>
                                         </Info>
                                         <Actions>
-                                            <Link href="#" onClick={(e) => { e.preventDefault(); handleAttendPuppy(item.id); }}>Attend</Link>
+                                         <Link href="#" onClick={(e) => { e.preventDefault(); handleAttendPuppy(item.id); }}>{ type === "attended" ? null : 'Attend'}</Link>
                                             <Link href="#" onClick={(e) => { e.preventDefault(); handleDeleteAppointment(item.id); }}>Delete</Link>
                                         </Actions>
                                         </InfoWrapper>

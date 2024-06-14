@@ -1,6 +1,5 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import api from '../service/api';
 import Link from 'next/link';
@@ -30,26 +29,15 @@ const DateInput = styled.input`
   font-size: 16px;
 `;
 
-const ListContainer = styled.div`
-  margin-top: 20px;
-`;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
 
-const ListItem = styled.div`
-  background-color: #ffffff;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-
-const DragHandle = styled.span`
-  cursor: move;
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 interface Appointment {
@@ -142,7 +130,7 @@ const WaitingList: React.FC = () => {
     <>
     <Container>
       <Title>Waiting List</Title>
-      
+      <Wrapper>
       <DateInput
         type="date"
         value={date}
@@ -151,10 +139,11 @@ const WaitingList: React.FC = () => {
       <Link href="/puppies">
         See Puppies
       </Link>
+      </Wrapper>
       <Title>Unattended</Title>
       <DragableList items={unattended} setItems={setUnattended} fetchList={fetchList} date={date}></DragableList>
       <Title>Attended</Title>
-      <DragableList items={attended} setItems={setAttended} fetchList={fetchList} date={date}></DragableList>
+      <DragableList items={attended} setItems={setAttended} fetchList={fetchList} date={date} type="attended"></DragableList>
     </Container>
     <Container>
     <Title>Schedule a Puppy</Title>

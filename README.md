@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Puppy Spa Frontend
 
-## Getting Started
+Node.js: v14.x or higher
+npm: v6.x or higher (or use yarn as an alternative)
 
-First, run the development server:
+Installation
+Clone the repository:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/AdryannMillos/puppy-spa-fe
+cd puppy-spa-fe
+Install dependencies:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Configuration
+The project uses environment variables for configuration. Create a .env file in the root directory of your project and add the required environment variables. you can see the variable on .env.example
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Running the Application
+To run the application locally, use the following command:
 
-## Learn More
+npm run start
+This command starts the application in development mode and watches for any changes in your source files.
 
-To learn more about Next.js, take a look at the following resources:
+The application will be running at http://localhost:3000 (or the port specified in your .env file).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Running Tests
+To run the tests, use the following commands:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+npx cypress run 

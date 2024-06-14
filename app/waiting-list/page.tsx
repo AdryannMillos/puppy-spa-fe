@@ -8,6 +8,7 @@ import Button from '../components/Button';
 import { useRouter } from 'next/navigation';
 import Input from '../components/Input';
 import DragableList from '../components/DragableList';
+import SearchableSelect from '../components/SearchableSelect';
 
 const Container = styled.div`
   max-width: 600px;
@@ -106,6 +107,8 @@ const WaitingList: React.FC = () => {
     fetchList(selectedDate);
   };
 
+
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -116,7 +119,7 @@ const WaitingList: React.FC = () => {
       const response = await api.post('/appointment/schedule-puppy', {
         service,
         date,
-        arrivalTime: "2024-06-1205:52:56",
+        arrivalTime: new Date(),
         attended: false,
         puppyId
 
@@ -126,17 +129,14 @@ const WaitingList: React.FC = () => {
         },
       });
       console.log('Puppy scheduled:', response.data);
-      router.push('/waiting-list');
+      setArrivalTime('');
+      setService('');
+      setPuppyId('');
+      fetchList(date);
     } catch (error) {
       console.error('Error creating puppy:', error);
     }
   };
-
-  const handleDragStart = (event: React.DragEvent<HTMLDivElement>, id: number) => {
-    event.dataTransfer.setData('id', id.toString());
-  };
-
-
 
   return (
     <>
@@ -148,15 +148,13 @@ const WaitingList: React.FC = () => {
         value={date}
         onChange={handleDateChange}
       />
-      <Link href="/add-puppy">
-        Add a puppy
+      <Link href="/puppies">
+        See Puppies
       </Link>
       <Title>Unattended</Title>
-      <DragableList items={unattended} setItems={setUnattended}></DragableList>
-      <ListContainer>
+      <DragableList items={unattended} setItems={setUnattended} fetchList={fetchList} date={date}></DragableList>
       <Title>Attended</Title>
-
-      </ListContainer>
+      <DragableList items={attended} setItems={setAttended} fetchList={fetchList} date={date}></DragableList>
     </Container>
     <Container>
     <Title>Schedule a Puppy</Title>
@@ -167,18 +165,7 @@ const WaitingList: React.FC = () => {
           onChange={(e) => setService(e.target.value)}
           placeholder="Service"
         />
-        <Input
-          type="text"
-          value={arrivalTime}
-          onChange={(e) => setArrivalTime(e.target.value)}
-          placeholder="ArrivalTime"
-        />
-        <Input
-          type="text"
-          value={puppyId}
-          onChange={(e) => setPuppyId(e.target.value)}
-          placeholder="Puppy Id"
-        />
+        <SearchableSelect setPuppyId={setPuppyId}></SearchableSelect>
         <Button>Submit</Button>
       </Form>
     </Container>

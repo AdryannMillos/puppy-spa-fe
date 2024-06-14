@@ -11,6 +11,7 @@ interface InputProps {
 const StyledInput = styled.input`
   width: 100%;
   padding: 8px;
+  box-sizing: border-box;
   margin-bottom: 10px;
   font-size: 16px;
 `;

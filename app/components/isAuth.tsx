@@ -30,7 +30,7 @@ export default function isAuth(Component: React.ComponentType<any>) {
 
     useEffect(() => {
       if (!isAuthenticated()) {
-        router.push("/login");
+        router.push("/");
       }
     }, []);
 
